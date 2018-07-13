@@ -1,0 +1,31 @@
+#!/bin/bash
+
+######################################################
+#   Compiles revcomp.cpp into the excutable revcomp  #
+######################################################
+
+set -e    # halt on first error
+
+link=all  # link all binaries by default
+linked=no # track whether we linked
+
+case $1 in  
+  -nolink) link=none ; shift ;;  # don't link
+esac
+
+# use 'clang++' as the compiler
+CPP=clang++
+
+# be aggressive about warnings and errors
+FLAGS="-g -O -Wall -Wextra -Werror -Wfatal-errors -std=c++11 -pedantic"
+
+# clear out old object files
+rm -f *.o
+
+# compile
+
+case $link in
+  all) $CPP $FLAGS -o dnatest main.cpp dna.cpp
+                  linked=yes ;;
+  none) $CPP $FLAGS -c dna.cpp ;;
+esac
